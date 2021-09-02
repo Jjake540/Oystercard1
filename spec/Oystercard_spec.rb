@@ -24,21 +24,34 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
+    let(:station){ double :station }
+
     it "should allow the user to touch in" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
+
     it "should raise an error if a card with insufficient funds is touched in" do
-      expect { subject.touch_in }.to raise_error "Insufficient funds for journey"
+      expect { subject.touch_in(station) }.to raise_error "Insufficient funds for journey"
       expect(subject).not_to be_in_journey
+    end
+
+    it "It stores entry station after touch in" do
+      subject.top_up(5)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 
+
+
   describe '#touch_out' do
+    let(:station){ double :station }
+
     it "should allow the user to touch out" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(station)
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
@@ -48,6 +61,7 @@ describe Oystercard do
     end
   end
 end
+
 
 
 # NameError:
