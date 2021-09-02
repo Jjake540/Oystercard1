@@ -16,19 +16,38 @@ describe Oystercard do
       expect { subject.top_up 95 }.to raise_error "Maximum balance exceeded"
     end
   end
-  describe '#deduct' do
 
-    it { is_expected.to respond_to(:deduct).with(1).argument }
-
-    it "should deduct from balance" do
-      expect{ subject.deduct 1 }.to change{ subject.balance }.by(-1)
+  describe '#in_journey?' do
+    it "should be false when not in journey" do
+      expect(subject).not_to be_in_journey
     end
+  end
 
+  describe '#touch_in' do
+    it "should allow the user to touch in" do
+      subject.top_up(5)
+      subject.touch_in
+      expect(subject).to be_in_journey
     end
+    it "should raise an error if a card with insufficient funds is touched in" do
+      expect { subject.touch_in }.to raise_error "Insufficient funds for journey"
+      expect(subject).not_to be_in_journey
+    end
+  end
 
+  describe '#touch_out' do
+    it "should allow the user to touch out" do
+      subject.top_up(5)
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+    it "should reduce the card balance by minimum fair" do
 
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FAIR)
+    end
+  end
 end
-
 
 
 # NameError:
