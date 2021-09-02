@@ -15,6 +15,7 @@ describe Oystercard do
     it "should throw an exception if balance exceeds limit" do
       expect { subject.top_up 95 }.to raise_error "Maximum balance exceeded"
     end
+
   end
 
   describe '#in_journey?' do
@@ -47,19 +48,38 @@ describe Oystercard do
 
 
   describe '#touch_out' do
-    let(:station){ double :station }
+    let(:entry_station) { double :station }
+    let(:exit_station) { double :station }
 
     it "should allow the user to touch out" do
       subject.top_up(5)
-      subject.touch_in(station)
-      subject.touch_out
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
     end
     it "should reduce the card balance by minimum fair" do
 
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FAIR)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FAIR)
     end
+    it "It stores exit station after touch out" do
+      subject.top_up(5)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
+    end
+    # it "should store a journey" do
+    #   expect()
   end
+it "has an empty list of journeys by default" do
+  expect(subject.journeys).to be_empty
+end
+
+let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+it 'stores a journey' do
+  subject.touch_in(entry_station)
+  subject.touch_out(exit_station)
+  expect(subject.journeys).to include journey
+end
 end
 
 
