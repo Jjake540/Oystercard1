@@ -67,19 +67,23 @@ describe Oystercard do
       subject.touch_out(exit_station)
       expect(subject.exit_station).to eq exit_station
     end
-    # it "should store a journey" do
-    #   expect()
-  end
-it "has an empty list of journeys by default" do
-  expect(subject.journeys).to be_empty
-end
+ 
+  
 
-let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
-it 'stores a journey' do
-  subject.touch_in(entry_station)
-  subject.touch_out(exit_station)
-  expect(subject.journeys).to include journey
-end
+    it "has an empty list of journeys by default" do
+      expect(subject.journeys).to be_empty
+    end
+
+    let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+    it 'stores a journey' do
+      subject.top_up(5) 
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journey
+    end
+  end
+
+
 end
 
 
