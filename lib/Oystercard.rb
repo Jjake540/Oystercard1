@@ -1,3 +1,5 @@
+require 'Station'
+
 class Oystercard
   attr_reader :balance, :in_journey, :entry_station, :exit_station, :journeys
 

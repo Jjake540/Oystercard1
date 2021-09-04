@@ -45,8 +45,6 @@ describe Oystercard do
     end
   end
 
-
-
   describe '#touch_out' do
     let(:entry_station) { double :station }
     let(:exit_station) { double :station }
@@ -83,13 +81,4 @@ describe Oystercard do
     end
   end
 
-
 end
-
-
-
-# NameError:
-#   uninitialized constant Oystercard
-# ./spec/Oystercard_spec.rb.
-# ./spec/Oystercard_spec.rb:1:in `<top (required)>'
-# Name error: Raised when a given name is invalid or undefined.
